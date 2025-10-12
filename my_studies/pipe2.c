@@ -28,6 +28,7 @@ int main(int argc, char *argv[])
         case 0:
             /* Child - reads from pipe */
             /* Write end is unused */
+            printf("child: closed write end\n");
             if (close(pfd[1]) == -1)
                 exit(-1);
   
@@ -38,17 +39,20 @@ int main(int argc, char *argv[])
                 if (numRead == -1)
                     exit(-1);
                 if (numRead == 0){
-                    printf("\n child: parent closed write end\n");
+                    printf("\n child: parent closed write end so reading stopped\n");
                     break;
                 }
                 /* End-of-file */
+                printf("child: waiting 10 seconds");
                 sleep(10);
                 printf("\nchild process: data received in child process is (%s)\n",buf);
                 printf("\nchild process: closing read end\n");
                 close(pfd[0]);
+                printf("child: waiting 10 seconds");
                 sleep(10);
 
-            }
+            }               
+            printf("\nchild process: closing read end out of loop\n");
             if (close(pfd[0]) == -1)
                 exit(-1);
 
@@ -58,6 +62,7 @@ int main(int argc, char *argv[])
         default:
 
             /* Parent - writes to pipe */
+            printf("parent: closed read end");
             if (close(pfd[0]) == -1)
             /* Read end is unused */
                exit(-1);

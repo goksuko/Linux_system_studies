@@ -45,7 +45,7 @@ int main(int argc, char *argv[])
                     exit(-1);
                 if (numRead == 0)
 				{
-                    printf("\n child: parent closed write end\n");
+                    printf("\n child: parent closed write end so reading is finished\n");
                     break;
                 }
                 /* End-of-file */
@@ -53,9 +53,9 @@ int main(int argc, char *argv[])
             }
             if (close(pfd[0]) == -1)
                 exit(-1);
-			sleep(2);
-			printf("\n child: closed read end\n");
-
+            printf("\n child: closed read end\n");
+            printf("child: sleeping 5 seconds\n");
+			sleep(5);
             break;
 
 
@@ -76,6 +76,7 @@ int main(int argc, char *argv[])
                 exit(-1);
             printf("\n parent: closed write end\n");
             wait(NULL);
+            printf("parent: waiting NULL ended");
             exit(0);
 
      /* Child will see EOF */
